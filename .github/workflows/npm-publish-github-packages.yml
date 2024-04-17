@@ -1,0 +1,36 @@
+# ROSAS-BOT-MS 
+# toda la información esta en el siguiente enlace. https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+esamos haciendo todo lo posible para que el bot funcione a la perfeccion 
+name:rosas bot-MS 
+todo se esta haciendo en forma de experimento para lograr tener un bot bien exelemte y mejorado 
+on:botrosas.2006
+  release:rosas.julca.bot
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm test
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
